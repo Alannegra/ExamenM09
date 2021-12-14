@@ -13,17 +13,12 @@ public class Recursos {
     int jerseis;
 
 
-    public String getNombre() {
-        return nombre;
-    }
-
     public Recursos(String nombre) {
         this.nombre = nombre;
         lliure = true;
     }
 
-
-    public synchronized void añadirManga() {
+    /*public synchronized void añadirManga() {
         if(NumMaxMangas > mangas) {
             try {
                 while (!lliure) wait();
@@ -35,28 +30,48 @@ public class Recursos {
             notifyAll();
 
         }
+    }*/
+    public synchronized void añadirManga() {
 
-    }
-
-    public synchronized void añadirCuerpo() {
-        if(NunMaxCuerpos > cuerpos){
             try {
-                while (!lliure) wait();
+                while (!lliure && NumMaxMangas > mangas){
+                    mangas++;
+                    wait();
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             lliure = false;
-            cuerpos++;
+
             notifyAll();
-        }
+
+
+    }
+
+    public synchronized void añadirCuerpo() {
+
+            try {
+                while (!lliure && NunMaxCuerpos > cuerpos){
+                    cuerpos++;
+                    wait();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            lliure = false;
+            notifyAll();
+
     }
 
     public synchronized void añadirJersei() {
-        if(mangas >= 2 && cuerpos >=1) {
-            mangas-=2;
-            cuerpos--;
+
+
             try {
-                while (!lliure) wait();
+                while (!lliure && mangas >= 2 && cuerpos >=1){
+                    mangas-=2;
+                    cuerpos--;
+                    wait();
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -64,9 +79,7 @@ public class Recursos {
             jerseis++;
             notifyAll();
 
-        }
     }
-
 
     public synchronized void deixa() {
         lliure = true;

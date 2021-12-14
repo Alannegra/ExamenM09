@@ -30,7 +30,7 @@ public class Costurero extends Thread {
             }
 
 
-            System.out.println("En el " + recurso.getNombre() + " añade " +nombre + " M" + recurso.mangas + " C" + recurso.cuerpos + " J" + recurso.jerseis);
+            System.out.println("En el " + "cesto" + " añade " +nombre + " M" + recurso.mangas + " C" + recurso.cuerpos + " J" + recurso.jerseis);
 
             try {
                 Thread.sleep((long) (Math.random()*800)+200);
